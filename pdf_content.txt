@@ -1,0 +1,23 @@
+
+
+Stop Sequence:
+#N#ColorSt.CodeNameChartElement
+1.43,791R58 G122 B57
+2.31,878R253 G255 B254
+3.12,3098BlackDefault
+4.29,293R143 G199 B60
+5.32,061R253 G255 B254
+6.11348BlackDefault
+7.53,092R121 G172 B66
+Production Worksheet
+Wilcom EmbroideryStudio - Designing
+Design:
+file
+Title:
+Stitches:22,560
+Height:115.7 mm
+Width:117.4 mm
+Colors:5
+Colorway:Colorway 1
+Zoom:0.99
+Authors:Design last saved : 6/30/2025 6:05:54 PMDate printed: 7/7/2025 6:20:41 PMPage 1 of 1

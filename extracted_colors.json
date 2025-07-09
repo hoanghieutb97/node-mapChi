@@ -1,0 +1,37 @@
+[
+  {
+    "index": 1,
+    "name": "43,791",
+    "rgb": "58,122,57",
+    "rgbRaw": "R58G122B57",
+    "lineNumber": 5
+  },
+  {
+    "index": 2,
+    "name": "31,878",
+    "rgb": "253,255,254",
+    "rgbRaw": "R253G255B254",
+    "lineNumber": 6
+  },
+  {
+    "index": 4,
+    "name": "29,293",
+    "rgb": "143,199,60",
+    "rgbRaw": "R143G199B60",
+    "lineNumber": 8
+  },
+  {
+    "index": 5,
+    "name": "32,061",
+    "rgb": "253,255,254",
+    "rgbRaw": "R253G255B254",
+    "lineNumber": 9
+  },
+  {
+    "index": 7,
+    "name": "53,092",
+    "rgb": "121,172,66",
+    "rgbRaw": "R121G172B66",
+    "lineNumber": 11
+  }
+]

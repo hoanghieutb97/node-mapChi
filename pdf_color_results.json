@@ -1,0 +1,119 @@
+{
+  "success": true,
+  "pdfInfo": {
+    "title": "file",
+    "pages": 1,
+    "fileSize": "19.85 KB"
+  },
+  "colors": [
+    {
+      "index": 1,
+      "rgb": "58,122,57",
+      "name": "43,791",
+      "maChi": "Y3167",
+      "distance": 3.174896835189762,
+      "similarity": 94
+    },
+    {
+      "index": 2,
+      "rgb": "253,255,254",
+      "name": "31,878",
+      "maChi": "T415",
+      "distance": 1.2388993166378053,
+      "similarity": 98
+    },
+    {
+      "index": 3,
+      "rgb": "143,199,60",
+      "name": "29,293",
+      "maChi": "Y3161",
+      "distance": 5.301033612543976,
+      "similarity": 89
+    },
+    {
+      "index": 4,
+      "rgb": "253,255,254",
+      "name": "32,061",
+      "maChi": "T415",
+      "distance": 1.2388993166378053,
+      "similarity": 98
+    },
+    {
+      "index": 5,
+      "rgb": "121,172,66",
+      "name": "53,092",
+      "maChi": "Y3161",
+      "distance": 3.028827798059669,
+      "similarity": 94
+    }
+  ],
+  "matchResults": [
+    {
+      "originalIndex": 1,
+      "originalRgb": "58,122,57",
+      "originalName": "43,791",
+      "closestMatch": {
+        "maChi": "Y3167",
+        "rgb": "53,115,63",
+        "distance": 3.174896835189762,
+        "similarity": 94
+      },
+      "isExactMatch": false
+    },
+    {
+      "originalIndex": 2,
+      "originalRgb": "253,255,254",
+      "originalName": "31,878",
+      "closestMatch": {
+        "maChi": "T415",
+        "rgb": "255,255,255",
+        "distance": 1.2388993166378053,
+        "similarity": 98
+      },
+      "isExactMatch": false
+    },
+    {
+      "originalIndex": 3,
+      "originalRgb": "143,199,60",
+      "originalName": "29,293",
+      "closestMatch": {
+        "maChi": "Y3161",
+        "rgb": "122,166,43",
+        "distance": 5.301033612543976,
+        "similarity": 89
+      },
+      "isExactMatch": false
+    },
+    {
+      "originalIndex": 4,
+      "originalRgb": "253,255,254",
+      "originalName": "32,061",
+      "closestMatch": {
+        "maChi": "T415",
+        "rgb": "255,255,255",
+        "distance": 1.2388993166378053,
+        "similarity": 98
+      },
+      "isExactMatch": false
+    },
+    {
+      "originalIndex": 5,
+      "originalRgb": "121,172,66",
+      "originalName": "53,092",
+      "closestMatch": {
+        "maChi": "Y3161",
+        "rgb": "122,166,43",
+        "distance": 3.028827798059669,
+        "similarity": 94
+      },
+      "isExactMatch": false
+    }
+  ],
+  "statistics": {
+    "exactMatches": 0,
+    "closeMatches": 4,
+    "noMatches": 1,
+    "total": 5
+  },
+  "timestamp": "2025-07-08T09:39:47.750Z"
+}
