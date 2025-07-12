@@ -2,6 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const os = require("os");
 const { spawn } = require("child_process");
+const { processColorMatching } = require("./colorMapping");
 
 /**
  * Chạy file Python extract_stop.py để trích xuất Stop Sequence
@@ -10,7 +11,7 @@ const { spawn } = require("child_process");
 async function processPDF(pdfPath) {
   try {
     console.log(`📄 Đang xử lý file PDF: ${pdfPath}`);
-    
+
     // Kiểm tra file có tồn tại không
     if (!fs.existsSync(pdfPath)) {
       console.log(`❌ File PDF không tồn tại: ${pdfPath}`);
@@ -20,7 +21,7 @@ async function processPDF(pdfPath) {
     // Lấy tên user hiện tại
     const currentUser = os.userInfo().username || process.env.USERNAME || process.env.USER || 'admin';
     const pythonScriptPath = path.join('C:', 'Users', currentUser, 'Desktop', 'serverEMB', 'extract_stop.py');
-    
+
     // Kiểm tra file Python có tồn tại không
     if (!fs.existsSync(pythonScriptPath)) {
       console.log(`❌ File Python không tồn tại: ${pythonScriptPath}`);
@@ -28,7 +29,7 @@ async function processPDF(pdfPath) {
     }
 
     console.log(`🐍 Đang chạy file Python: ${pythonScriptPath}`);
-    
+
     // Chạy file Python
     return new Promise((resolve, reject) => {
       const pythonProcess = spawn('python', [pythonScriptPath], {
@@ -50,22 +51,19 @@ async function processPDF(pdfPath) {
       pythonProcess.on('close', (code) => {
         if (code === 0) {
           try {
-            console.log('🔍 Raw output từ Python:');
-            console.log(outputData);
-            console.log('─'.repeat(60));
-            
             // Tìm JSON array hoặc object trong output
             let jsonMatch = outputData.match(/\[[\s\S]*\]/); // Tìm array trước
             if (!jsonMatch) {
               jsonMatch = outputData.match(/\{[\s\S]*\}/); // Tìm object nếu không có array
             }
-            
+
             if (jsonMatch) {
               const jsonString = jsonMatch[0];
               const jsonData = JSON.parse(jsonString);
-              console.log('✅ so buoc chi da lay ***************************:');
-              console.log(JSON.stringify(jsonData, null, 2));
-              
+              // console.log('✅ so buoc chi da lay ***************************:');
+              // console.log(JSON.stringify(jsonData));
+              let result = processColorMatching(jsonData);
+              console.log("result", result);
             } else {
               console.log('❌ Không tìm thấy JSON trong output Python');
               resolve(null);
@@ -88,7 +86,7 @@ async function processPDF(pdfPath) {
         reject(error);
       });
     });
-    
+
   } catch (error) {
     console.error("❌ Lỗi khi xử lý PDF:", error.message);
   }
@@ -103,7 +101,7 @@ async function processPDF(pdfPath) {
 function waitForFile(filePath, timeoutMs = 10000) {
   return new Promise((resolve) => {
     const startTime = Date.now();
-    
+
     const checkFile = () => {
       try {
         if (fs.existsSync(filePath)) {
@@ -121,18 +119,18 @@ function waitForFile(filePath, timeoutMs = 10000) {
       } catch (error) {
         console.log(`⏳ Lỗi kiểm tra file: ${error.message}, thử lại...`);
       }
-      
+
       const elapsed = Date.now() - startTime;
       if (elapsed >= timeoutMs) {
         console.log(`⏰ Timeout sau ${timeoutMs}ms - File không xuất hiện hoặc không thể đọc`);
         resolve(false);
         return;
       }
-      
+
       // Kiểm tra lại sau 200ms
       setTimeout(checkFile, 200);
     };
-    
+
     checkFile();
   });
 }
@@ -143,13 +141,13 @@ function waitForFile(filePath, timeoutMs = 10000) {
 async function processEMBFile() {
   const currentUser = os.userInfo().username || process.env.USERNAME || process.env.USER || 'admin';
   const pdfPath = path.join('C:', 'Users', currentUser, 'Desktop', 'serverEMB', 'fileEMB', 'file.pdf');
-  
+
   console.log('🔄 Bắt đầu xử lý file PDF sau sự kiện ghi đè...');
   console.log(`📂 Đang chờ file: ${pdfPath}`);
-  
+
   // Chờ file PDF xuất hiện tối đa 10 giây
   const fileExists = await waitForFile(pdfPath, 10000);
-  
+
   if (fileExists) {
     await processPDF(pdfPath);
   } else {
