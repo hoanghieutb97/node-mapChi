@@ -61,7 +61,7 @@ async function pushItemMongo(listExcel) {
                     stopLess:[],
                     slCuonCHi:0,
                     urlEMB:"",
-                    status:"doiThietKe",
+                    status:"",
                     userThietKe:"",
                     userLamKhuon:"",
                     idMayTheu:"",
@@ -80,11 +80,10 @@ async function pushItemMongo(listExcel) {
             items: processedUrls
         }
     })
-    
-    console.log('allItems', allItems);
+
     
     try {
-        console.log('items', allItems[0].items);
+    
         
                 // Lọc và tạo item trong MongoDB sử dụng service (xử lý song song)
         let errorItems = [];

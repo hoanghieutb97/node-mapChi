@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 
 /**
- * Service CRUD cho collection listDon
+ * Service CRUD cho collection users
  */
-class ListDonService {
+class usersService {
 
     /**
      * Tạo item mới
@@ -12,7 +12,7 @@ class ListDonService {
      */
     async create(itemData) {
         try {
-            const result = await mongoose.connection.db.collection('listDon').insertOne(itemData);
+            const result = await mongoose.connection.db.collection('users').insertOne(itemData);
             console.log(`✅ Đã tạo item mới với ID: ${result.insertedId}`);
             return {
                 success: true,
@@ -32,7 +32,7 @@ class ListDonService {
      */
     async createMany(itemsData) {
         try {
-            const result = await mongoose.connection.db.collection('listDon').insertMany(itemsData);
+            const result = await mongoose.connection.db.collection('users').insertMany(itemsData);
             console.log(`✅ Đã tạo ${result.insertedCount} items mới`);
             return {
                 success: true,
@@ -52,7 +52,7 @@ class ListDonService {
      */
     async findAll(filter = {}) {
         try {
-            const items = await mongoose.connection.db.collection('listDon').find(filter).toArray();
+            const items = await mongoose.connection.db.collection('users').find(filter).toArray();
             return {
                 success: true,
                 message: 'Lấy danh sách thành công',
@@ -72,7 +72,7 @@ class ListDonService {
      */
     async findByBarcode(barcode) {
         try {
-            const item = await mongoose.connection.db.collection('listDon').findOne({ barcode });
+            const item = await mongoose.connection.db.collection('users').findOne({ barcode });
             return {
                 success: true,
                 message: item ? 'Tìm thấy item' : 'Không tìm thấy item',
@@ -84,70 +84,36 @@ class ListDonService {
         }
     }
 
-
-    /**
-
- * @returns {Object} - Item tìm được
- */
-    async findByDoiLamKhuon() {
-        try {
-            const item = await mongoose.connection.db
-                .collection('listDon')
-                .find({
-                    items: {
-                        $not: { $elemMatch: { status: { $ne: 'doiLamKhuon' } } }
-                    }
-                })
-                .toArray();
-
-
-            return {
-                success: true,
-                message: item ? 'Tìm thấy item' : 'Không tìm thấy item',
-                data: item
-            };
-        } catch (error) {
-            console.error('❌ Lỗi khi tìm item theo vaiTro:', error);
-            throw error;
-        }
-    }
-
-    /**
- * Lấy item theo doiTheu
-
- * @returns {Object} - Item tìm được
- */
-    async findByDoiTheu() {
-        try {
-            const item = await mongoose.connection.db
-                .collection('listDon')
-                .find({
-                    items: {
-                        $not: { $elemMatch: { status: { $ne: 'doiTheu' } } }
-                    }
-                })
-                .toArray();
-
-
-            return {
-                success: true,
-                message: item ? 'Tìm thấy item' : 'Không tìm thấy item',
-                data: item
-            };
-        } catch (error) {
-            console.error('❌ Lỗi khi tìm item theo doiTheu:', error);
-            throw error;
-        }
-    }
-
     /**
      * Lấy item theo ID
-     * @param {String} id - ID của item
+     * @param {String} MatKhau - ID của item
      * @returns {Object} - Item tìm được
      */
+    async findByMatKhau(MatKhau) {
+        try {
+            const item = await mongoose.connection.db.collection('users').findOne({ MatKhau });
+            return {
+                success: true,
+                message: item ? 'Tìm thấy item' : 'Không tìm thấy item',
+                data: item
+            };
+        } catch (error) {
+            return {
+                success: true,
+                message: 'khong req duoc tu server theu toi mongodb',
+                data: null
+            };
+        }
+    }
+
+    /**
+ * Lấy item theo ID
+ * @param {String} id - ID của item
+ * @returns {Object} - Item tìm được
+ */
     async findById(id) {
         try {
-            const item = await mongoose.connection.db.collection('listDon').findOne({ _id: new mongoose.Types.ObjectId(id) });
+            const item = await mongoose.connection.db.collection('users').findOne({ _id: new mongoose.Types.ObjectId(id) });
             return {
                 success: true,
                 message: item ? 'Tìm thấy item' : 'Không tìm thấy item',
@@ -159,6 +125,7 @@ class ListDonService {
         }
     }
 
+
     /**
      * Cập nhật item theo barcode
      * @param {String} barcode - Barcode cần cập nhật
@@ -167,7 +134,7 @@ class ListDonService {
      */
     async updateByBarcode(barcode, updateData) {
         try {
-            const result = await mongoose.connection.db.collection('listDon').updateOne(
+            const result = await mongoose.connection.db.collection('users').updateOne(
                 { barcode },
                 { $set: updateData }
             );
@@ -199,13 +166,13 @@ class ListDonService {
      */
     async updateById(id, updateData) {
         try {
-            const result = await mongoose.connection.db.collection('listDon').updateOne(
+            const result = await mongoose.connection.db.collection('users').updateOne(
                 { _id: new mongoose.Types.ObjectId(id) },
                 { $set: updateData }
             );
 
             if (result.matchedCount > 0) {
-
+                
                 return {
                     success: true,
                     message: 'Cập nhật thành công',
@@ -230,7 +197,7 @@ class ListDonService {
      */
     async deleteByBarcode(barcode) {
         try {
-            const result = await mongoose.connection.db.collection('listDon').deleteOne({ barcode });
+            const result = await mongoose.connection.db.collection('users').deleteOne({ barcode });
 
             if (result.deletedCount > 0) {
                 console.log(`✅ Đã xóa item với barcode: ${barcode}`);
@@ -258,7 +225,7 @@ class ListDonService {
      */
     async deleteById(id) {
         try {
-            const result = await mongoose.connection.db.collection('listDon').deleteOne({ _id: new mongoose.Types.ObjectId(id) });
+            const result = await mongoose.connection.db.collection('users').deleteOne({ _id: new mongoose.Types.ObjectId(id) });
 
             if (result.deletedCount > 0) {
                 console.log(`✅ Đã xóa item với ID: ${id}`);
@@ -286,7 +253,7 @@ class ListDonService {
      */
     async existsByBarcode(barcode) {
         try {
-            const item = await mongoose.connection.db.collection('listDon').findOne({ barcode });
+            const item = await mongoose.connection.db.collection('users').findOne({ barcode });
             return !!item;
         } catch (error) {
             console.error('❌ Lỗi khi kiểm tra item:', error);
@@ -320,4 +287,4 @@ class ListDonService {
     }
 }
 
-module.exports = new ListDonService(); 
+module.exports = new usersService(); 

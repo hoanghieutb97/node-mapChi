@@ -11,11 +11,11 @@ const { log } = require('console');
  */
 function processEMBFile(networkPath) {
   try {
-    console.log(`   📂 Đường dẫn: ${networkPath}`);
+
 
     // Kiểm tra thư mục có tồn tại không
     if (!fs.existsSync(networkPath)) {
-      console.log('❌ Thư mục không tồn tại');
+      console.log('❌ Thư mục không tồn tại:', networkPath);
       return {
         success: false,
         error: 'Thư mục không tồn tại',
@@ -27,11 +27,11 @@ function processEMBFile(networkPath) {
     // Tìm tất cả file .emb trong thư mục
     const files = fs.readdirSync(networkPath);
     const embFiles = files.filter(file => file.toLowerCase().endsWith('.emb'));
-    
-    console.log(embFiles);
+
+
     // Kiểm tra số lượng file EMB
     if (embFiles.length === 0) {
-      console.log('❌ Không tìm thấy file .emb nào');
+      console.log('❌ Không tìm thấy file .emb nào', networkPath);
       return {
         success: false,
         error: 'Không tìm thấy file EMB',
@@ -69,7 +69,7 @@ function processEMBFile(networkPath) {
     // Xóa tất cả file cũ trong thư mục fileEMB (tuần tự)
     console.log('🗑️ Bắt đầu xóa file cũ trong thư mục fileEMB...');
     const existingFiles = fs.readdirSync(fileEMBDir);
-    
+
     if (existingFiles.length === 0) {
       console.log('📁 Thư mục fileEMB đã trống');
     } else {
@@ -82,7 +82,7 @@ function processEMBFile(networkPath) {
         } catch (error) {
         }
       }
-      
+
       console.log('✅ Hoàn thành xóa file cũ');
     }
 
@@ -94,7 +94,7 @@ function processEMBFile(networkPath) {
 
       // Chạy xuLyEMB.exe
       const exeResult = runXuLyEMB(currentUser);
-      
+
       return {
         success: true,
         message: 'Xử lý file EMB thành công',
@@ -135,7 +135,7 @@ function processEMBFile(networkPath) {
  */
 function runXuLyEMB(currentUser) {
   const exePath = path.join('C:', 'Users', currentUser, 'Desktop', 'serverEMB', 'xulyEMB_autoIT', 'xuLyEMB.exe');
-  
+
   if (fs.existsSync(exePath)) {
     try {
       const child = spawn(exePath, [], {
@@ -145,8 +145,8 @@ function runXuLyEMB(currentUser) {
       });
 
       child.unref();
-      console.log(`   ✅ Đã khởi chạy xuLyEMB.exe (PID: ${child.pid})`);
       
+
       return {
         success: true,
         pid: child.pid,
@@ -171,6 +171,5 @@ function runXuLyEMB(currentUser) {
 }
 
 module.exports = {
-  processEMBFile,
-  runXuLyEMB
+  processEMBFile
 }; 

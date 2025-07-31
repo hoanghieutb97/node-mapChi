@@ -432,7 +432,7 @@ app.post('/api/sendEMB', (req, res) => {
         });
         
         child.unref();
-        console.log(`   ✅ Đã khởi chạy xuLyEMB.exe (PID: ${child.pid})`);
+        
       } else {
         console.log(`   ❌ Không tìm thấy file: ${exePath}`);
       }

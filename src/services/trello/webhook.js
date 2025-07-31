@@ -61,25 +61,30 @@ async function processCard(cardId) {
                     // Sử dụng InPutexcel để xử lý file
 
                     const listExcel = await InPutexcel(tempFilePath);
-                    
-                    
+
+
                     // Kiểm tra xem có phần tử false trong listExcel không
                     let canMatch = listExcel.some(item => item.addGllm === false);
-                    
+
                     if (canMatch) {// nếu là false thì có cái thiếu variant
                         await moveToRunErr(cardId);
                     }
-                    else{
+                    else {
                         // Push dữ liệu vào MongoDB
                         await pushItemMongo(listExcel);
-                        console.log('✅ Đã push dữ liệu vào MongoDB');
-                        
                         // Move card to Run Done
                         await moveToRunDone(cardId);
-                        console.log('✅ Đã move card to Run Done');
+                        axios.get('http://192.168.1.220:1002/api/GetAllDesignFetchData') // link tới Next.js API route
+                            .then(res => {
+
+                            })
+                            .catch(err => {
+
+                            });
+
                     }
-                    
-               
+
+
 
                 } catch (error) {
                     console.log("Error processing Excel file:", error);

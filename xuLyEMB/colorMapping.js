@@ -1,5 +1,9 @@
 const fs = require('fs');
 const path = require('path');
+const listDonService = require('../src/services/mongo/listDonService');
+const { processEMBFile } = require('./embProcessor');
+const fsPromises = require('fs').promises;
+const os = require('os');
 
 /**
  * Chuyển đổi RGB sang Lab (sRGB D65)
@@ -205,7 +209,7 @@ function findClosestColor(targetRgb, colorList) {
  * @param {Array} payload - Danh sách màu cần xử lý
  * @returns {Object} - Kết quả xử lý
  */
-function processColorMatching(payload) {
+async function processColorMatching(payload) {
   try {
     // Kiểm tra dữ liệu đầu vào
     if (!Array.isArray(payload)) {
@@ -245,11 +249,56 @@ function processColorMatching(payload) {
         console.log(`❌ Stop ${item.stop} (${item.RGB}) --- Không tìm thấy màu khớp`);
       }
     });
-    console.log("processedItems", processedItems);
+
+
+    console.log(processedItems);
+    global.itemsXuLyEMB[0].SlBuocChi = processedItems;
+
+    // Copy file.sdt và file.pdf sang networkPath của item đầu tiên
+    const currentUser = os.userInfo().username || process.env.USERNAME || process.env.USER || 'admin';
+    const srcDir = path.join('C:', 'Users', currentUser, 'Desktop', 'serverEMB', 'fileEMB');
+
+
+    const destDir = global.itemsXuLyEMB[0]?.networkPath;
+    const filesToCopy = ['file.dst', 'file.pdf'];
+    if (destDir) {
+      try {
+        await fsPromises.mkdir(destDir, { recursive: true });
+        for (const file of filesToCopy) {
+          const src = path.join(srcDir, file);
+          const dest = path.join(destDir, file);
+          await fsPromises.copyFile(src, dest);
+          console.log(`✅ Đã copy ${file} sang ${destDir}`);
+        }
+      } catch (err) {
+        console.error('❌ Lỗi copy file:', err);
+      }
+    }
+
+    const result = await listDonService.findById(global.itemsXuLyEMB[0]._id);
+    let { _id, ...updateData } = result.data;
+
+    updateData.items = updateData.items.map(itemx => {
+      if (itemx.positionTheu === global.itemsXuLyEMB[0].items.positionTheu) return { ...itemx, stopLess: processedItems }
+      return itemx
+    })
+
+
+
+    let fetchMaCHi = await listDonService.updateById(_id, updateData);
+    console.log(fetchMaCHi);
+
+    let itemxoa = global.itemsXuLyEMB.shift();
+
+    if (global.itemsXuLyEMB[0])
+      await processEMBFile(global.itemsXuLyEMB[0].networkPath)
+
+
+
 
     let stopLess = processedItems.map(item => ({
       stop: item.stop,
-      maCuonChi: item.maCuonChi, 
+      maCuonChi: item.maCuonChi,
       rgb: item.RGB,
     }))
 

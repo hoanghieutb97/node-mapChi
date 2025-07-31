@@ -9,6 +9,7 @@ const { processColorMatching } = require("./colorMapping");
  * @param {string} pdfPath - Đường dẫn đến file PDF
  */
 async function processPDF(pdfPath) {
+  let SlBuocChi = null;
   try {
     console.log(`📄 Đang xử lý file PDF: ${pdfPath}`);
 
@@ -62,8 +63,8 @@ async function processPDF(pdfPath) {
               const jsonData = JSON.parse(jsonString);
               // console.log('✅ so buoc chi da lay ***************************:');
               // console.log(JSON.stringify(jsonData));
-              let result = processColorMatching(jsonData);
-              console.log("result", result);
+              SlBuocChi = processColorMatching(jsonData);
+
             } else {
               console.log('❌ Không tìm thấy JSON trong output Python');
               resolve(null);
@@ -86,6 +87,7 @@ async function processPDF(pdfPath) {
         reject(error);
       });
     });
+    console.log(SlBuocChi);
 
   } catch (error) {
     console.error("❌ Lỗi khi xử lý PDF:", error.message);
@@ -113,7 +115,7 @@ function waitForFile(filePath, timeoutMs = 10000) {
             setTimeout(() => resolve(true), 1000);
             return;
           } else {
-            console.log(`⏳ File tồn tại nhưng rỗng, chờ thêm...`);
+            
           }
         }
       } catch (error) {
@@ -138,12 +140,10 @@ function waitForFile(filePath, timeoutMs = 10000) {
 /**
  * Xử lý file PDF trong thư mục fileEMB
  */
-async function processEMBFile() {
+async function processPDFFile() {
   const currentUser = os.userInfo().username || process.env.USERNAME || process.env.USER || 'admin';
   const pdfPath = path.join('C:', 'Users', currentUser, 'Desktop', 'serverEMB', 'fileEMB', 'file.pdf');
 
-  console.log('🔄 Bắt đầu xử lý file PDF sau sự kiện ghi đè...');
-  console.log(`📂 Đang chờ file: ${pdfPath}`);
 
   // Chờ file PDF xuất hiện tối đa 10 giây
   const fileExists = await waitForFile(pdfPath, 10000);
@@ -157,5 +157,5 @@ async function processEMBFile() {
 
 module.exports = {
   processPDF,
-  processEMBFile
+  processPDFFile
 }; 

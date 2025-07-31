@@ -1,7 +1,7 @@
 const chokidar = require('chokidar');
 const path = require('path');
 const os = require('os');
-const { processEMBFile } = require('./pdfProcessor');
+const { processPDFFile } = require('./pdfProcessor');
 
 /**
  * Theo dõi thay đổi file status.txt trong thư mục serverEMB
@@ -12,7 +12,7 @@ function watchStatusFile() {
   const statusFilePath = path.join('C:', 'Users', currentUser, 'Desktop', 'serverEMB', 'status.txt');
   const watchDir = path.join('C:', 'Users', currentUser, 'Desktop', 'serverEMB');
 
-  
+
   console.log(`📄 Đang theo dõi file: ${statusFilePath}`);
 
   // Khởi tạo watcher
@@ -28,14 +28,17 @@ function watchStatusFile() {
   // Chỉ bắt sự kiện thay đổi file (ghi đè)
   watcher.on('change', async (filePath) => {
     if (path.basename(filePath) === 'status.txt') {
-      
+
       console.log('🔄 Đã ghi đè file status.txt');
       console.log(`   📂 Đường dẫn: ${filePath}`);
       console.log(`   ⏰ Thời gian: ${new Date().toLocaleString('vi-VN')}`);
-      
+
       // Gọi hàm xử lý PDF sau khi bắt được sự kiện ghi đè
       try {
-        await processEMBFile();
+
+        await processPDFFile();
+
+
       } catch (error) {
         console.error('❌ Lỗi khi xử lý PDF:', error.message);
       }
