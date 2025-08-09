@@ -338,7 +338,7 @@ app.post('/userInTemDonHang', async (req, res) => {
         const form = new FormData();
         form.append('image', fs.createReadStream(outputJpg));
         try {
-          await axios.post('http://192.168.1.220:1004/print', form, {
+          await axios.post('http://210.245.53.96:1004/print', form, {
             headers: form.getHeaders(),
             maxContentLength: Infinity,
             maxBodyLength: Infinity
@@ -542,7 +542,7 @@ app.post('/sendDstFileToTheu', async (req, res) => {
     const form = new FormData();
     form.append('file', fs.createReadStream(filePath));
 
-    const response = await axios.post('http://192.168.1.220:1007/upload', form, {
+    const response = await axios.post('http://210.245.53.96:1007/upload', form, {
       headers: form.getHeaders()
     });
 

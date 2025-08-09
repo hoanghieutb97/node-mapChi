@@ -286,7 +286,7 @@ async function processColorMatching(payload) {
 
 
     let fetchMaCHi = await listDonService.updateById(_id, updateData);
-    console.log(fetchMaCHi);
+    
 
     let itemxoa = global.itemsXuLyEMB.shift();
 
